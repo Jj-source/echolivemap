@@ -2,7 +2,7 @@ body {
   margin: 0;
   padding: 0;
   font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-  background-image: url('https://images.nightcafe.studio/jobs/CiQrKNriB2RKfS2MjCAK/CiQrKNriB2RKfS2MjCAK--1--q1nuv.jpg?tr=w-1600,c-at_max');
+  background-image: url('./assets/dyno1.jpg');
   background-size: cover;
   background-position: center;
   height: 100vh;
