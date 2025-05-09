@@ -14,6 +14,9 @@ interface MapProps {
 const Map: React.FC<MapProps> = ({ city, visible }) => {
   const mapRef = useRef<L.Map | null>(null);
   const mapContainerRef = useRef<HTMLDivElement>(null);
+  const venuesLayerRef = useRef<L.LayerGroup | null>(null);
+  const eventsLayerRef = useRef<L.LayerGroup | null>(null);
+
 
   useEffect(() => {
     if (visible && mapContainerRef.current && !mapRef.current) {
@@ -46,7 +49,9 @@ const Map: React.FC<MapProps> = ({ city, visible }) => {
       
       // Create layer groups for venues and events
       const venuesLayer = L.layerGroup();
+      venuesLayerRef.current = venuesLayer;
       const eventsLayer = L.layerGroup();
+      eventsLayerRef.current = eventsLayer;
       
       // Set up overlay layers
       const overlays = {
@@ -56,9 +61,6 @@ const Map: React.FC<MapProps> = ({ city, visible }) => {
       
       // Add layer control
       L.control.layers(baseLayers, overlays).addTo(mapRef.current);
-      
-      // Add venue markers layer to the map
-      venuesLayer.addTo(mapRef.current);
       
       // Return cleanup function to destroy map on unmount
       return () => {
@@ -97,11 +99,14 @@ const Map: React.FC<MapProps> = ({ city, visible }) => {
         venues
       );
       
+      venuesLayerRef.current?.clearLayers();
+
       // Add markers for venues within radius
       venuesWithinRadius.forEach((venue) => {
-        L.marker(venue.coordinates)
-          .bindPopup(venue.name)
-          .addTo(mapRef.current as L.Map);
+        if (venuesLayerRef.current) {
+          const marker = L.marker(venue.coordinates).bindPopup(venue.name);
+          venuesLayerRef.current.addLayer(marker);
+        }        
       });
     }
   }, [city, visible]);
