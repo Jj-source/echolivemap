@@ -2,6 +2,7 @@ import type { VenueType } from '../types';
 
 export const venues: VenueType[] = [
   { name: "Savoy", coordinates: [45.074858, 7.677847] },
+  { name: "CasaCHIARA", coordinates: [45.044878, 7.647837] },
   { name: "L'Obelix", coordinates: [45.074769, 7.677737] },
   { name: "Caffè Roma", coordinates: [41.9028, 12.4964] },
   { name: "Ristorante Trastevere", coordinates: [41.8886, 12.4731] },
