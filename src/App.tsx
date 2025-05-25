@@ -1,19 +1,27 @@
 import React, { useState } from 'react';
 import CityModal from './components/CityModal';
+import VenueModal from './components/VenueModal';
 import Map from './components/Map';
-import type { CityType } from './types';
+import type { CityType,VenueType } from './types';
 import './index.css';
 
 const App: React.FC = () => {
   const [selectedCity, setSelectedCity] = useState<CityType | null>(null);
   const [showModal, setShowModal] = useState<boolean>(true);
   const [showMap, setShowMap] = useState<boolean>(false);
+  const [selectedVenue, setSelectedVenue] = useState<VenueType | null>(null);
 
   const handleCitySelect = (city: CityType) => {
     setSelectedCity(city);
     setShowModal(false);
     setShowMap(true);
   };
+
+  const handleVenueClick = (venue: VenueType) => {
+    console.log('Venue selected:', venue);
+    setSelectedVenue(venue);
+  };
+  
 
   const handleUseMyPosition = () => {
     // Get user's geolocation
@@ -49,13 +57,23 @@ const App: React.FC = () => {
         visible={showModal}
       />
       
+      {selectedVenue && (
+        <VenueModal 
+          venue={selectedVenue} 
+          onClose={() => setSelectedVenue(null)}
+        />
+      )}
+
       {selectedCity && (
         <Map 
           city={selectedCity} 
           visible={showMap}
+          onVenueClick={handleVenueClick}
         />
       )}
+
     </div>
+    
   );
 };
 

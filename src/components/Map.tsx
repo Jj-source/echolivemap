@@ -9,9 +9,10 @@ import { venues } from '../data/venues';
 interface MapProps {
   city: CityType;
   visible: boolean;
+  onVenueClick: (venue: VenueType) => void;
 }
 
-const Map: React.FC<MapProps> = ({ city, visible }) => {
+const Map: React.FC<MapProps> = ({ city, visible, onVenueClick }) => {
   const mapRef = useRef<L.Map | null>(null);
   const mapContainerRef = useRef<HTMLDivElement>(null);
   const venuesLayerRef = useRef<L.LayerGroup | null>(null);
@@ -86,7 +87,7 @@ const Map: React.FC<MapProps> = ({ city, visible }) => {
       });
       
       // Add a marker for the city
-      const cityMarker = L.marker(city.coordinates)
+      L.marker(city.coordinates)
         .addTo(mapRef.current)
         .bindPopup(`<b>${city.name}</b>`)
         .openPopup();
@@ -104,7 +105,15 @@ const Map: React.FC<MapProps> = ({ city, visible }) => {
       // Add markers for venues within radius
       venuesWithinRadius.forEach((venue) => {
         if (venuesLayerRef.current) {
-          const marker = L.marker(venue.coordinates).bindPopup(venue.name);
+          const marker = L.marker(venue.coordinates);
+          marker.on('click', () => {
+            console.log('Marker clicked:', venue.name);
+            onVenueClick({
+              name: venue.name,
+              description: venue.description,
+              coordinates: venue.coordinates
+            });
+          });
           venuesLayerRef.current.addLayer(marker);
         }        
       });

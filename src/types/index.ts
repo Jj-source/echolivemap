@@ -7,6 +7,7 @@ export interface CityType {
   
 export interface VenueType {
     name: string;
+    description: string;
     coordinates: [number, number]; // [latitude, longitude]
 }
   
